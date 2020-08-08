@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="EditReportAlert" customModule="Captain_Cue" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="347" height="286"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sửa báo cáo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NJw-fk-hhW">
+                    <rect key="frame" x="10" y="20" width="327" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Nhập tiêu đề báo cáo" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j6E-Bh-FhI">
+                    <rect key="frame" x="10" y="60.5" width="327" height="34"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="34" id="GtT-v0-2bS"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="V2i-95-vR0">
+                    <rect key="frame" x="10" y="104.5" width="327" height="116"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nOV-aa-hc5">
+                    <rect key="frame" x="0.0" y="240.5" width="347" height="0.5"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="0.5" id="ebB-DN-iwT"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oy1-Nm-yZT">
+                    <rect key="frame" x="0.0" y="241" width="173.5" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="MCU-MB-a5U"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                    <state key="normal" title="Xác nhận"/>
+                    <connections>
+                        <action selector="btnConfirmWasTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="q4y-kw-kGB"/>
+                    </connections>
+                </button>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jLm-QV-1J2">
+                    <rect key="frame" x="173.5" y="241" width="0.5" height="45"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="0.5" id="4hJ-A1-Lnb"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Wb-ES-nK1">
+                    <rect key="frame" x="173.5" y="241" width="173.5" height="45"/>
+                    <state key="normal" title="Huỷ"/>
+                    <connections>
+                        <action selector="btnCancelWasTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="bC1-Pp-Ia1"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.94111829999999996" green="0.94510000940000005" blue="0.94084906580000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="nOV-aa-hc5" firstAttribute="top" secondItem="V2i-95-vR0" secondAttribute="bottom" constant="20" id="4hU-BU-qB3"/>
+                <constraint firstAttribute="bottom" secondItem="oy1-Nm-yZT" secondAttribute="bottom" id="7Yc-BG-tme"/>
+                <constraint firstItem="oy1-Nm-yZT" firstAttribute="width" secondItem="4Wb-ES-nK1" secondAttribute="width" id="86g-bD-yVW"/>
+                <constraint firstItem="4Wb-ES-nK1" firstAttribute="leading" secondItem="oy1-Nm-yZT" secondAttribute="trailing" id="9U2-mR-Jku"/>
+                <constraint firstAttribute="trailing" secondItem="NJw-fk-hhW" secondAttribute="trailing" constant="10" id="AeQ-jS-Yep"/>
+                <constraint firstAttribute="bottom" secondItem="jLm-QV-1J2" secondAttribute="bottom" id="Gxg-sa-TF6"/>
+                <constraint firstItem="nOV-aa-hc5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="IXV-n6-VbR"/>
+                <constraint firstItem="4Wb-ES-nK1" firstAttribute="top" secondItem="nOV-aa-hc5" secondAttribute="bottom" id="NeS-Et-s5H"/>
+                <constraint firstItem="V2i-95-vR0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="PHm-Cz-7Ff"/>
+                <constraint firstAttribute="trailing" secondItem="nOV-aa-hc5" secondAttribute="trailing" id="RJg-RT-Zly"/>
+                <constraint firstItem="jLm-QV-1J2" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="W1V-bg-neZ"/>
+                <constraint firstItem="jLm-QV-1J2" firstAttribute="top" secondItem="nOV-aa-hc5" secondAttribute="bottom" id="WLB-nh-FlK"/>
+                <constraint firstItem="j6E-Bh-FhI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="ck5-2c-rgN"/>
+                <constraint firstItem="NJw-fk-hhW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="fUt-iq-YAx"/>
+                <constraint firstItem="oy1-Nm-yZT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fcg-VC-hb0"/>
+                <constraint firstAttribute="trailing" secondItem="j6E-Bh-FhI" secondAttribute="trailing" constant="10" id="g0B-MA-NwW"/>
+                <constraint firstAttribute="bottom" secondItem="4Wb-ES-nK1" secondAttribute="bottom" id="m6J-oe-eHu"/>
+                <constraint firstItem="4Wb-ES-nK1" firstAttribute="leading" secondItem="oy1-Nm-yZT" secondAttribute="trailing" id="ms9-Lh-1jP"/>
+                <constraint firstItem="j6E-Bh-FhI" firstAttribute="top" secondItem="NJw-fk-hhW" secondAttribute="bottom" constant="20" id="nJN-iP-lTW"/>
+                <constraint firstItem="oy1-Nm-yZT" firstAttribute="top" secondItem="nOV-aa-hc5" secondAttribute="bottom" id="paa-d9-o1J"/>
+                <constraint firstItem="V2i-95-vR0" firstAttribute="top" secondItem="j6E-Bh-FhI" secondAttribute="bottom" constant="10" id="qHY-g0-N2a"/>
+                <constraint firstItem="4Wb-ES-nK1" firstAttribute="height" secondItem="oy1-Nm-yZT" secondAttribute="height" id="qWS-C4-ujv"/>
+                <constraint firstItem="NJw-fk-hhW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="rxi-Wp-qdi"/>
+                <constraint firstAttribute="trailing" secondItem="V2i-95-vR0" secondAttribute="trailing" constant="10" id="sms-8h-0LO"/>
+                <constraint firstAttribute="trailing" secondItem="4Wb-ES-nK1" secondAttribute="trailing" id="sw3-BD-5s6"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="lbTitle" destination="NJw-fk-hhW" id="o1C-nL-gbX"/>
+                <outlet property="txtReportTitle" destination="j6E-Bh-FhI" id="D9y-Ey-qIC"/>
+                <outlet property="txtvReportDescription" destination="V2i-95-vR0" id="8bA-Qr-kqA"/>
+            </connections>
+            <point key="canvasLocation" x="83.333333333333343" y="302.00892857142856"/>
+        </view>
+    </objects>
+</document>
