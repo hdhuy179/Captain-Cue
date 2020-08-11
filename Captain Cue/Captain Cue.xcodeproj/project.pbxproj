@@ -13,6 +13,7 @@
 		561F3EBA24DD146D00504CAC /* EditReportAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561F3EB924DD146D00504CAC /* EditReportAlert.swift */; };
 		562685F324DD513B00D6FEB3 /* ReportHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562685F224DD513B00D6FEB3 /* ReportHeaderView.swift */; };
 		562685F524DD515B00D6FEB3 /* ReportHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 562685F424DD515B00D6FEB3 /* ReportHeaderView.xib */; };
+		562BF92924E15BED0098F764 /* LocalDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562BF92824E15BED0098F764 /* LocalDataService.swift */; };
 		563BAD7C24DBE4C600CA024F /* PresentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563BAD7B24DBE4C600CA024F /* PresentHandler.swift */; };
 		563BAD7E24DBFEA100CA024F /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563BAD7D24DBFEA100CA024F /* UIViewControllerExtension.swift */; };
 		563BAD8024DC09A300CA024F /* FloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563BAD7F24DC09A300CA024F /* FloatExtension.swift */; };
@@ -33,6 +34,11 @@
 		5651F88024DBE1A500B67E24 /* BallCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5651F87E24DBE1A500B67E24 /* BallCollectionViewCell.swift */; };
 		5651F88324DBE1E500B67E24 /* ReportModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5651F88124DBE1E500B67E24 /* ReportModel.swift */; };
 		5651F88424DBE1E500B67E24 /* ShotModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5651F88224DBE1E500B67E24 /* ShotModel.swift */; };
+		567BEE8024E239BC00576699 /* MistakeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567BEE7E24E239BC00576699 /* MistakeTableViewCell.swift */; };
+		567BEE8124E239BC00576699 /* MistakeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 567BEE7F24E239BC00576699 /* MistakeTableViewCell.xib */; };
+		567BEE8424E23AFC00576699 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567BEE8324E23AFC00576699 /* Enums.swift */; };
+		567BEE8824E25CDD00576699 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 567BEE8724E25CDC00576699 /* GoogleService-Info.plist */; };
+		567BEE8C24E28AFA00576699 /* RemoteDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567BEE8B24E28AFA00576699 /* RemoteDataService.swift */; };
 		5DDFB26A932E1D554F9055BB /* Pods_Captain_Cue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A17FA4A7F288799E5F949B58 /* Pods_Captain_Cue.framework */; };
 		8178DC98AE11297CEB44486E /* Pods_Captain_Cue_Captain_CueUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0154A1C86608FD56061811F /* Pods_Captain_Cue_Captain_CueUITests.framework */; };
 		8324070A970474CB3F657212 /* Pods_Captain_CueTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEDB84C79CA4DD9C34F03DE3 /* Pods_Captain_CueTests.framework */; };
@@ -65,6 +71,7 @@
 		561F3EB924DD146D00504CAC /* EditReportAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditReportAlert.swift; sourceTree = "<group>"; };
 		562685F224DD513B00D6FEB3 /* ReportHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportHeaderView.swift; sourceTree = "<group>"; };
 		562685F424DD515B00D6FEB3 /* ReportHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReportHeaderView.xib; sourceTree = "<group>"; };
+		562BF92824E15BED0098F764 /* LocalDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataService.swift; sourceTree = "<group>"; };
 		563BAD7B24DBE4C600CA024F /* PresentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentHandler.swift; sourceTree = "<group>"; };
 		563BAD7D24DBFEA100CA024F /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		563BAD7F24DC09A300CA024F /* FloatExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatExtension.swift; sourceTree = "<group>"; };
@@ -91,6 +98,12 @@
 		5651F87E24DBE1A500B67E24 /* BallCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BallCollectionViewCell.swift; sourceTree = "<group>"; };
 		5651F88124DBE1E500B67E24 /* ReportModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportModel.swift; sourceTree = "<group>"; };
 		5651F88224DBE1E500B67E24 /* ShotModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShotModel.swift; sourceTree = "<group>"; };
+		567BEE7E24E239BC00576699 /* MistakeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MistakeTableViewCell.swift; sourceTree = "<group>"; };
+		567BEE7F24E239BC00576699 /* MistakeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MistakeTableViewCell.xib; sourceTree = "<group>"; };
+		567BEE8324E23AFC00576699 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		567BEE8724E25CDC00576699 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		567BEE8B24E28AFA00576699 /* RemoteDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataService.swift; sourceTree = "<group>"; };
+		567BEE8D24E28BA100576699 /* Captain_Cue_Bridging_Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Captain_Cue_Bridging_Header.h; sourceTree = "<group>"; };
 		69F883F24F24B9DDAA827FC7 /* Pods-Captain Cue.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Captain Cue.release.xcconfig"; path = "Target Support Files/Pods-Captain Cue/Pods-Captain Cue.release.xcconfig"; sourceTree = "<group>"; };
 		9D2DDB995510545F46BEF115 /* Pods-Captain CueTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Captain CueTests.release.xcconfig"; path = "Target Support Files/Pods-Captain CueTests/Pods-Captain CueTests.release.xcconfig"; sourceTree = "<group>"; };
 		A0154A1C86608FD56061811F /* Pods_Captain_Cue_Captain_CueUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Captain_Cue_Captain_CueUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -167,10 +180,50 @@
 			path = ReportHeaderView;
 			sourceTree = "<group>";
 		};
+		562BF92624E15AC60098F764 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				563BAD7B24DBE4C600CA024F /* PresentHandler.swift */,
+				5651F87024DBC73000B67E24 /* Constants.swift */,
+				567BEE8324E23AFC00576699 /* Enums.swift */,
+				562BF92824E15BED0098F764 /* LocalDataService.swift */,
+				567BEE8B24E28AFA00576699 /* RemoteDataService.swift */,
+				562BF92A24E15CEB0098F764 /* Extensions */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		562BF92724E15AD50098F764 /* ClassCode */ = {
+			isa = PBXGroup;
+			children = (
+				5651F83424DBAADA00B67E24 /* ReportManagerViewController.swift */,
+				5651F86C24DBC47800B67E24 /* ReportDetailsViewController.swift */,
+				563BAD8324DC187600CA024F /* ShotDetailsViewController.swift */,
+				5651F86E24DBC48C00B67E24 /* CreateNewShotViewController.swift */,
+				562685F624DD515E00D6FEB3 /* ReportHeaderView */,
+				561F3EBB24DD147000504CAC /* EditReportAlert */,
+				561F3EB624DCEF8F00504CAC /* ShotRecordTableViewCell */,
+				5651F86B24DBC28E00B67E24 /* BallCollectionViewCell */,
+				567BEE8224E239C000576699 /* MistakeTableViewCell */,
+			);
+			path = ClassCode;
+			sourceTree = "<group>";
+		};
+		562BF92A24E15CEB0098F764 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				563BAD7D24DBFEA100CA024F /* UIViewControllerExtension.swift */,
+				563BAD8124DC14B900CA024F /* DateExtension.swift */,
+				563BAD7F24DC09A300CA024F /* FloatExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		5651F82424DBAADA00B67E24 = {
 			isa = PBXGroup;
 			children = (
 				5651F82F24DBAADA00B67E24 /* Captain Cue */,
+				567BEE8724E25CDC00576699 /* GoogleService-Info.plist */,
 				5651F84624DBAADB00B67E24 /* Captain CueTests */,
 				5651F85124DBAADB00B67E24 /* Captain CueUITests */,
 				5651F82E24DBAADA00B67E24 /* Products */,
@@ -194,24 +247,14 @@
 			children = (
 				5651F83024DBAADA00B67E24 /* AppDelegate.swift */,
 				5651F83224DBAADA00B67E24 /* SceneDelegate.swift */,
-				5651F87024DBC73000B67E24 /* Constants.swift */,
-				563BAD7D24DBFEA100CA024F /* UIViewControllerExtension.swift */,
-				563BAD8124DC14B900CA024F /* DateExtension.swift */,
-				563BAD7F24DC09A300CA024F /* FloatExtension.swift */,
-				562685F624DD515E00D6FEB3 /* ReportHeaderView */,
-				561F3EBB24DD147000504CAC /* EditReportAlert */,
-				561F3EB624DCEF8F00504CAC /* ShotRecordTableViewCell */,
-				5651F86B24DBC28E00B67E24 /* BallCollectionViewCell */,
-				5651F83424DBAADA00B67E24 /* ReportManagerViewController.swift */,
-				5651F86C24DBC47800B67E24 /* ReportDetailsViewController.swift */,
-				563BAD8324DC187600CA024F /* ShotDetailsViewController.swift */,
-				5651F86E24DBC48C00B67E24 /* CreateNewShotViewController.swift */,
+				562BF92624E15AC60098F764 /* Helpers */,
+				562BF92724E15AD50098F764 /* ClassCode */,
+				5651F87224DBE05800B67E24 /* Model */,
 				5651F83624DBAADA00B67E24 /* Main.storyboard */,
 				5651F83924DBAADB00B67E24 /* Assets.xcassets */,
 				5651F83B24DBAADB00B67E24 /* LaunchScreen.storyboard */,
 				5651F83E24DBAADB00B67E24 /* Info.plist */,
-				5651F87224DBE05800B67E24 /* Model */,
-				563BAD7B24DBE4C600CA024F /* PresentHandler.swift */,
+				567BEE8D24E28BA100576699 /* Captain_Cue_Bridging_Header.h */,
 			);
 			path = "Captain Cue";
 			sourceTree = "<group>";
@@ -250,6 +293,15 @@
 				5651F88224DBE1E500B67E24 /* ShotModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		567BEE8224E239C000576699 /* MistakeTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				567BEE7E24E239BC00576699 /* MistakeTableViewCell.swift */,
+				567BEE7F24E239BC00576699 /* MistakeTableViewCell.xib */,
+			);
+			path = MistakeTableViewCell;
 			sourceTree = "<group>";
 		};
 		963FA49532003120DDCA8515 /* Frameworks */ = {
@@ -373,6 +425,8 @@
 			files = (
 				561F3EB524DCEF8B00504CAC /* ShotRecordTableViewCell.xib in Resources */,
 				562685F524DD515B00D6FEB3 /* ReportHeaderView.xib in Resources */,
+				567BEE8824E25CDD00576699 /* GoogleService-Info.plist in Resources */,
+				567BEE8124E239BC00576699 /* MistakeTableViewCell.xib in Resources */,
 				5651F83D24DBAADB00B67E24 /* LaunchScreen.storyboard in Resources */,
 				5651F87F24DBE1A500B67E24 /* BallCollectionViewCell.xib in Resources */,
 				5651F83A24DBAADB00B67E24 /* Assets.xcassets in Resources */,
@@ -507,19 +561,23 @@
 			files = (
 				5651F83524DBAADA00B67E24 /* ReportManagerViewController.swift in Sources */,
 				5651F88324DBE1E500B67E24 /* ReportModel.swift in Sources */,
+				567BEE8424E23AFC00576699 /* Enums.swift in Sources */,
 				562685F324DD513B00D6FEB3 /* ReportHeaderView.swift in Sources */,
 				563BAD8024DC09A300CA024F /* FloatExtension.swift in Sources */,
 				5651F86D24DBC47800B67E24 /* ReportDetailsViewController.swift in Sources */,
 				5651F87124DBC73000B67E24 /* Constants.swift in Sources */,
 				561F3EB424DCEF8B00504CAC /* ShotRecordTableViewCell.swift in Sources */,
 				5651F83124DBAADA00B67E24 /* AppDelegate.swift in Sources */,
+				567BEE8024E239BC00576699 /* MistakeTableViewCell.swift in Sources */,
 				563BAD8224DC14B900CA024F /* DateExtension.swift in Sources */,
+				562BF92924E15BED0098F764 /* LocalDataService.swift in Sources */,
 				5651F83324DBAADA00B67E24 /* SceneDelegate.swift in Sources */,
 				5651F88424DBE1E500B67E24 /* ShotModel.swift in Sources */,
 				561F3EBA24DD146D00504CAC /* EditReportAlert.swift in Sources */,
 				5651F88024DBE1A500B67E24 /* BallCollectionViewCell.swift in Sources */,
 				563BAD7C24DBE4C600CA024F /* PresentHandler.swift in Sources */,
 				563BAD8424DC187600CA024F /* ShotDetailsViewController.swift in Sources */,
+				567BEE8C24E28AFA00576699 /* RemoteDataService.swift in Sources */,
 				563BAD7E24DBFEA100CA024F /* UIViewControllerExtension.swift in Sources */,
 				5651F86F24DBC48C00B67E24 /* CreateNewShotViewController.swift in Sources */,
 			);

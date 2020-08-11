@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>481735986530-bk0ojd5oes5qq9j4aa7jp0h3i6h266qu.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.481735986530-bk0ojd5oes5qq9j4aa7jp0h3i6h266qu</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDO5b0hSsfVwn4S5yauH_v8RDsj-hlDeRQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>481735986530</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.hdh</string>
+	<key>PROJECT_ID</key>
+	<string>captain-cue</string>
+	<key>STORAGE_BUCKET</key>
+	<string>captain-cue.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:481735986530:ios:2d77b5cb443d89e04cf03b</string>
+	<key>DATABASE_URL</key>
+	<string>https://captain-cue.firebaseio.com</string>
+</dict>
+</plist>
