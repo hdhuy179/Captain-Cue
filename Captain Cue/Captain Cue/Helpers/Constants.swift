@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 struct Constants {
-    
+    static let resultList: [String] = ["Trái", "Lắc trái", "Trúng", "Lắc phải", "Phải"]
     
     struct ReportManagerVC {
         static let alertNibName = "EditReportAlert"
@@ -20,7 +20,7 @@ struct Constants {
         
         static let tbvHeaderNibName = "ReportHeaderView"
         static let tbvHeaderID = "ReportHeaderView"
-        static let tbvHeaderHeight: CGFloat = 35
+        static let tbvHeaderHeight: CGFloat = 45
     }
     
     struct CreateNewShotVC {
@@ -49,14 +49,22 @@ struct Constants {
     }
     
     struct ReportModel {
+        static let firebaseCollectionName = "Report"
         enum Properties: String {
             case id, title, desc, time
         }
     }
     
     struct ShotModel {
+        static let firebaseCollectionName = "Shot"
         enum Properties: String {
             case id, ballNumber, result, technicallyShot, time, reportID, mistakes
+        }
+    }
+    
+    struct OfflineStorageModel {
+        enum Properties: String {
+            case id, collectionName, menthodType, objectID
         }
     }
 }

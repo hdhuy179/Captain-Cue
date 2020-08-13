@@ -8,12 +8,15 @@
 
 import UIKit
 import RealmSwift
+import M13ProgressSuite
 
 class ReportManagerViewController: UIViewController {
     
     @IBOutlet weak var tbvReport: UITableView!
     var visualEffect: UIVisualEffectView?
     var alert: EditReportAlert?
+    
+    lazy var backupProgressView: M13ProgressViewRing? = nil
     
     //    var reportData: Results<ReportModel>?
     var reportData: [[ReportModel]] = []
@@ -23,6 +26,7 @@ class ReportManagerViewController: UIViewController {
         // Do any additional setup after loading the view.
         checkRestoreAbility()
         setupView()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,33 +42,35 @@ class ReportManagerViewController: UIViewController {
     func checkRestoreAbility() {
         let realm = try! Realm()
         if realm.isEmpty {
-            var taskCounter = 0
-            
-            ReportModel.getAllCouldData { [weak self] (datas, err) in
-                if let _ = err {
-                    
-                } else if let datas = datas {
-                    ReportModel.restoreData(data: datas)
-                    taskCounter += 1
-                    if taskCounter == 2 {
-                        self?.showAlert(title: "Restore", message: "Dữ liệu đã được khôi phục từ Cloud")
-                        self?.setupDatas()
-                        return
+            self.showConfirmAlert(title: "Restore", message: "Bạn có muốn restore dữ liệu từ server không?") {
+                var taskCounter = 0
+                
+                ReportModel.getAllCouldData { [weak self] (datas, err) in
+                    if let _ = err {
+                        
+                    } else if let datas = datas {
+                        ReportModel.restoreData(data: datas)
+                        taskCounter += 1
+                        if taskCounter == 2 {
+                            self?.showAlert(title: "Restore", message: "Dữ liệu đã được khôi phục từ Cloud")
+                            self?.setupDatas()
+                            return
+                        }
+                        
                     }
-                    
                 }
-            }
-            
-            ShotModel.getAllCouldData { [weak self] (datas, err) in
-                if let _ = err {
-                    
-                } else if let datas = datas {
-                    ShotModel.restoreData(data: datas)
-                    taskCounter += 1
-                    if taskCounter == 2 {
-                        self?.showAlert(title: "Restore", message: "Dữ liệu đã được khôi phục từ Cloud")
-                        self?.setupDatas()
-                        return
+                
+                ShotModel.getAllCouldData { [weak self] (datas, err) in
+                    if let _ = err {
+                        
+                    } else if let datas = datas {
+                        ShotModel.restoreData(data: datas)
+                        taskCounter += 1
+                        if taskCounter == 2 {
+                            self?.showAlert(title: "Restore", message: "Dữ liệu đã được khôi phục từ Cloud")
+                            self?.setupDatas()
+                            return
+                        }
                     }
                 }
             }
@@ -118,22 +124,26 @@ class ReportManagerViewController: UIViewController {
 //        let service = LocalDataService()
 //        let searchResult = service.getAllDatas().sorted(byKeyPath: Constants.ReportModel.Properties.time.rawValue, ascending: false) as Results<ReportModel>
         
-        let searchResult = ReportModel.getAllData().sorted(byKeyPath: Constants.ReportModel.Properties.time.rawValue, ascending: false)
+//        let searchResult = ReportModel.getAllData().sorted(byKeyPath: Constants.ReportModel.Properties.time.rawValue, ascending: false)
+        let searchResult = DataServiceManager.shared.getAllData().sorted(by: { $0.time > $1.time}) as [ReportModel]
         
-        var tempArr: [ReportModel] = []
-        var currentDate = searchResult.first?.time.convertToString(withDateFormat: "dd/MM/yyyy")
-        
-        for item in searchResult {
-            let itemDate = item.time.convertToString(withDateFormat: "dd/MM/yyyy")
-            if itemDate == currentDate {
-                tempArr.append(item)
-            } else {
-                currentDate = itemDate
-                reportData.append(tempArr)
-                tempArr.removeAll()
+        if searchResult.isEmpty == false {
+            var tempArr: [ReportModel] = []
+            var currentDate = searchResult.first?.time.convertToString(withDateFormat: "dd/MM/yyyy")
+            
+            for item in searchResult {
+                let itemDate = item.time.convertToString(withDateFormat: "dd/MM/yyyy")
+                if itemDate == currentDate {
+                    tempArr.append(item)
+                } else {
+                    currentDate = itemDate
+                    reportData.append(tempArr)
+                    tempArr = [item]
+                }
             }
+            reportData.append(tempArr)
         }
-        reportData.append(tempArr)
+        
         tbvReport.reloadData()
     }
     
@@ -149,7 +159,8 @@ class ReportManagerViewController: UIViewController {
             report = ReportModel(_title: "\(dateStr)_0\(no)", _time: Date())
         }
 
-        ReportModel.addNew(data: report)
+//        ReportModel.addNew(data: report)
+        DataServiceManager.shared.addObject(data: report, completion: nil)
         let presentHandler = PresentHandler()
         presentHandler.pushReportDetailsVC(fromVC: self, withData: [report])
         tbvReport.reloadData()
@@ -172,27 +183,60 @@ class ReportManagerViewController: UIViewController {
     
     @IBAction func btnBackupWasTapped(_ sender: Any) {
         self.showConfirmAlert(title: "Back up", message: "Mọi dữ liệu trên server sẽ được thay thế bằng dữ liệu trên máy của bạn. Bạn có muốn tiếp tục không?") {
-            self.view.isUserInteractionEnabled = false
-            let allReportData: [ReportModel] = ReportModel.getAllData().map({ $0 })
-            var taskCounter = 0
             
-            ReportModel.backupCloudData(allReportData) { [weak self] (err) in
-                taskCounter += 1
-                if taskCounter == 2 {
-                    self?.showAlert(title: "Back up", message: "Mọi dữ liệu đã được back up lên server")
-                    self?.view.isUserInteractionEnabled = true
-                    return
+            let width: CGFloat = 50
+            let height: CGFloat = 50
+            let backupProgressView = M13ProgressViewRing(frame: CGRect(x: (UIScreen.main.bounds.width - width)/2, y: (UIScreen.main.bounds.height - height)/2, width: width, height: height))
+            let fadedView = UIVisualEffectView(frame: UIScreen.main.bounds)
+            fadedView.effect = UIBlurEffect(style: .dark)
+            fadedView.alpha = 0.4
+            self.navigationController?.view.addSubview(fadedView)
+            self.navigationController?.view.addSubview(backupProgressView)
+            
+            let allReportData: [ReportModel] = DataServiceManager.shared.getAllData()//ReportModel.getAllData().map({ $0 })
+            
+            var progressReport: CGFloat = 0
+            var progressShot: CGFloat = 0
+            
+            ReportModel.backupCloudData(allReportData) { [weak self] progress, err  in
+                if let progress = progress {
+                    progressReport = progress
+                    
+                    backupProgressView.setProgress(progressReport/2.0 + progressShot/2.0, animated: true)
+                    if progressReport == 1 && progressShot == 1 {
+                        backupProgressView.perform(M13ProgressViewActionSuccess, animated: true)
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                            self?.showAlert(title: "Back up", message: "Mọi dữ liệu đã được back up lên server")
+                            backupProgressView.removeFromSuperview()
+                            fadedView.removeFromSuperview()
+                            
+                            return
+                        }
+                        
+                    }
+                }
+
+            }
+            let allShotData: [ShotModel] = DataServiceManager.shared.getAllData()//ShotModel.getAllData().map({$0})
+            ShotModel.backupCloudData(allShotData) { [weak self] progress, err in
+                
+                if let progress = progress {
+                    progressShot = progress
+                    
+                    backupProgressView.setProgress(progressReport/2.0 + progressShot/2.0, animated: true)
+                    if progressReport == 1 && progressShot == 1 {
+                        backupProgressView.perform(M13ProgressViewActionSuccess, animated: true)
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                            self?.showAlert(title: "Back up", message: "Mọi dữ liệu đã được back up lên server")
+                            backupProgressView.removeFromSuperview()
+                            fadedView.removeFromSuperview()
+                            
+                            return
+                        }
+                        
+                    }
                 }
                 
-            }
-            let allShotData: [ShotModel] = ShotModel.getAllData().map({$0})
-            ShotModel.backupCloudData(allShotData) { [weak self] (err) in
-                taskCounter += 1
-                if taskCounter == 2 {
-                    self?.showAlert(title: "Back up", message: "Mọi dữ liệu đã được back up lên server")
-                    self?.view.isUserInteractionEnabled = true
-                    return
-                }
             }
         }
     }
@@ -234,8 +278,7 @@ extension ReportManagerViewController: UITableViewDelegate {
 //        if reportData.isEmpty || reportData.first?.isEmpty == true {
 //            return 0
 //        }
-        let realm = try! Realm()
-        if realm.isEmpty {
+        if reportData.isEmpty {
             return 0
         }
         return Constants.ReportManagerVC.tbvHeaderHeight
@@ -253,7 +296,8 @@ extension ReportManagerViewController: UITableViewDelegate {
         let delete = UITableViewRowAction(style: .destructive, title: "Xoá") { (_, _) in
             self.showConfirmAlert(title: "Xoá", message: "Bạn có chắc muốn xoá báo cáo này không?") {
                 let data = self.reportData[indexPath.section][indexPath.item]
-                ReportModel.delete(data: data)
+//                ReportModel.delete(data: data)
+                DataServiceManager.shared.deleteObject(data: data)
                 self.setupDatas()
                 self.tbvReport.reloadData()
                 
@@ -271,7 +315,7 @@ extension ReportManagerViewController: UITableViewDelegate {
                 alert.configView(_reportData: repData)
                 alert.delegate = self
                 
-                let width: CGFloat = 280
+                let width: CGFloat = UIScreen.main.bounds.width*2/3
                 let height: CGFloat = 300
                 let x = (UIScreen.main.bounds.width - width)/2
                 let y = (UIScreen.main.bounds.height - height)/2
@@ -296,7 +340,8 @@ extension ReportManagerViewController: EditReportAlertDelegate {
             newReport.title = title
             newReport.desc = desc
             
-            ReportModel.update(data: newReport)
+//            ReportModel.update(data: newReport)
+            DataServiceManager.shared.updateObject(data: newReport)
             tbvReport.reloadData()
         }
         visualEffect?.removeFromSuperview()

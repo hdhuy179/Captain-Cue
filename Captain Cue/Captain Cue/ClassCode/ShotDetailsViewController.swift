@@ -18,7 +18,7 @@ class ShotDetailsViewController: UIViewController {
     var alert: EditReportAlert?
     
     var reportDatas: [ReportModel]!
-    var shotResult: Results<ShotModel>?
+    var shotResult: [ShotModel]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +88,8 @@ class ShotDetailsViewController: UIViewController {
             idList.append(item.id)
         }
         
-        shotResult = ShotModel.getAllData(from: idList).sorted(byKeyPath: Constants.ShotModel.Properties.time.rawValue, ascending: true)
+//        shotResult = ShotModel.getAllData(from: idList).sorted(byKeyPath: Constants.ShotModel.Properties.time.rawValue, ascending: true)
+        shotResult = DataServiceManager.shared.getShotData(from: idList).sorted(by: {$0.time < $1.time})
         if reportDatas.count > 1 {
             navigationItem.title = (reportDatas?.first?.time.convertToString(withDateFormat: "yyyy_MM_dd"))
         } else {
@@ -164,7 +165,7 @@ extension ShotDetailsViewController: UITableViewDelegate {
             alert.configView(_reportData: reportData)
             alert.delegate = self
             
-            let width: CGFloat = 280
+            let width: CGFloat = UIScreen.main.bounds.width*2/3
             let height: CGFloat = 300
             let x = (UIScreen.main.bounds.width - width)/2
             let y = (UIScreen.main.bounds.height - height)/2
@@ -189,8 +190,10 @@ extension ShotDetailsViewController: UITableViewDelegate {
         let delete = UITableViewRowAction(style: .destructive, title: "Xoá") { (_, _) in
             self.showConfirmAlert(title: "Xoá", message: "Bạn có chắc muốn xoá không?") {
                 if let data = self.shotResult?[indexPath.item-1] {
-                    ShotModel.delete(data: data)
-                    self.tbvReportContent.reloadData()
+                    DataServiceManager.shared.deleteObject(data: data)
+//                    ShotModel.delete(data: data)
+                    
+                    self.setupDatas()
                 }
 
             }
@@ -204,7 +207,8 @@ extension ShotDetailsViewController: EditReportAlertDelegate {
             newReport.title = title
             newReport.desc = desc
             
-            ReportModel.update(data: newReport)
+            DataServiceManager.shared.updateObject(data: newReport)
+//            ReportModel.update(data: newReport)
             setupDatas()
         }
         visualEffect?.removeFromSuperview()

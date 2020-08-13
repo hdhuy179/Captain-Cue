@@ -17,5 +17,4 @@ enum MistakeType: String, CaseIterable {
     case no6 = "Rút lệch"
     case no7 = "Không dừng"
     case no8 = "Không xác định"
-    
 }

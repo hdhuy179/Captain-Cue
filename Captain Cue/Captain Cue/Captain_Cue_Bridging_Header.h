@@ -15,5 +15,7 @@
 @import FirebaseFirestore;
 @import FirebaseStorage;
 @import Material;
+@import RealmSwift;
+@import M13ProgressSuite;
 
 #endif /* Captain_Cue_Bridging_Header_h */

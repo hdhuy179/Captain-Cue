@@ -4,7 +4,7 @@
 target 'Captain Cue' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-
+#use_modular_headers!
   # Pods for Captain Cue
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'
@@ -17,9 +17,11 @@ target 'Captain Cue' do
 	pod 'M13Checkbox'
   pod 'RxSwift'
   pod 'RxCocoa'
-
+  pod 'M13ProgressSuite'
+  pod 'ReachabilitySwift'
+  
   target 'Captain CueTests' do
-    inherit! :search_paths
+    inherit! :complete#search_paths
     # Pods for testing
   end
 

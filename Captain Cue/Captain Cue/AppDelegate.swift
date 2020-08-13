@@ -17,6 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
+        _ = Network.internet
+        DataServiceManager.shared.configDB(_localDB: RealmDataService(), _remoteDB: FirebaseDataService())
+        DataServiceManager.shared.configNetwork(_network: Network.internet)
+        DataServiceManager.shared.checkAndMergeChangeInLocalDatabase()
         return true
     }
 

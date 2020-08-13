@@ -7,8 +7,11 @@
 //
 
 import XCTest
+//@testable import Captain_Cue
 
 class Captain_CueUITests: XCTestCase {
+    
+    
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.

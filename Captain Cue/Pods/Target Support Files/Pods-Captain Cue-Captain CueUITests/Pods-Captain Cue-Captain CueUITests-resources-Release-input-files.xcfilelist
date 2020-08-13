@@ -1,0 +1,4 @@
+${PODS_ROOT}/Target Support Files/Pods-Captain Cue-Captain CueUITests/Pods-Captain Cue-Captain CueUITests-resources.sh
+${PODS_CONFIGURATION_BUILD_DIR}/Material/com.cosmicmind.material.icons.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/Material/com.cosmicmind.material.fonts.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates-Cpp.bundle

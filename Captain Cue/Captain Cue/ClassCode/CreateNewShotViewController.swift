@@ -23,7 +23,7 @@ class CreateNewShotViewController: UIViewController {
     var selectedIndex: Int = -1
     
     var reportData: ReportModel!
-    var shotResult: Results<ShotModel>?
+    var shotResult: [ShotModel]?
     
     var mistakeDict: [Int: Bool] = [:]
     var isMistakeDisabled: Bool = false
@@ -60,7 +60,7 @@ class CreateNewShotViewController: UIViewController {
     }
     
     func setupDatas() {
-        shotResult = ShotModel.getAllData(from: reportData.id)
+        shotResult = DataServiceManager.shared.getShotData(from: reportData.id) as [ShotModel]
         
     }
     
@@ -83,8 +83,7 @@ class CreateNewShotViewController: UIViewController {
                              _mistakes: mistakes,
                              _time: Date(),
                              _reportID: reportData.id)
-        print(mistakes)
-        ShotModel.addNew(data: shot)
+        DataServiceManager.shared.addObject(data: shot)
         self.navigationController?.popViewController(animated: true)
     }
     

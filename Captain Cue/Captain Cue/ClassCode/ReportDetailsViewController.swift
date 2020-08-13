@@ -14,7 +14,7 @@ class ReportDetailsViewController: UIViewController {
     @IBOutlet weak var tbvReportContent: UITableView!
     
     var reportDatas: [ReportModel]!
-    var shotResult: Results<ShotModel>?
+    var shotResult: [ShotModel]?
     
     var holdCount: Int = 0
     
@@ -66,7 +66,7 @@ class ReportDetailsViewController: UIViewController {
             idList.append(item.id)
         }
         
-        shotResult = ShotModel.getAllData(from: idList).sorted(byKeyPath: Constants.ShotModel.Properties.time.rawValue, ascending: true)
+        shotResult = DataServiceManager.shared.getShotData(from: idList).sorted(by: {$0.time < $1.time})//ShotModel.getAllData(from: idList).sorted(byKeyPath: Constants.ShotModel.Properties.time.rawValue, ascending: true)
         
         guard let shotResult = shotResult else { return }
         

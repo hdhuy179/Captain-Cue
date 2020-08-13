@@ -1,6 +1,0 @@
-framework module Pods_Captain_CueTests {
-  umbrella header "Pods-Captain CueTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
