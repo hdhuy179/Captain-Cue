@@ -40,39 +40,9 @@ class ReportManagerViewController: UIViewController {
     }
     
     func checkRestoreAbility() {
-        let realm = try! Realm()
-        if realm.isEmpty {
-            self.showConfirmAlert(title: "Restore", message: "Bạn có muốn restore dữ liệu từ server không?") {
-                var taskCounter = 0
-                
-                ReportModel.getAllCouldData { [weak self] (datas, err) in
-                    if let _ = err {
-                        
-                    } else if let datas = datas {
-                        ReportModel.restoreData(data: datas)
-                        taskCounter += 1
-                        if taskCounter == 2 {
-                            self?.showAlert(title: "Restore", message: "Dữ liệu đã được khôi phục từ Cloud")
-                            self?.setupDatas()
-                            return
-                        }
-                        
-                    }
-                }
-                
-                ShotModel.getAllCouldData { [weak self] (datas, err) in
-                    if let _ = err {
-                        
-                    } else if let datas = datas {
-                        ShotModel.restoreData(data: datas)
-                        taskCounter += 1
-                        if taskCounter == 2 {
-                            self?.showAlert(title: "Restore", message: "Dữ liệu đã được khôi phục từ Cloud")
-                            self?.setupDatas()
-                            return
-                        }
-                    }
-                }
+        DataServiceManager.shared.checkRestoreAbility(fromVC: self) { [weak self] err in
+            if err == nil {
+                self?.setupDatas()
             }
         }
     }
@@ -193,52 +163,85 @@ class ReportManagerViewController: UIViewController {
             self.navigationController?.view.addSubview(fadedView)
             self.navigationController?.view.addSubview(backupProgressView)
             
-            let allReportData: [ReportModel] = DataServiceManager.shared.getAllData()//ReportModel.getAllData().map({ $0 })
-            
-            var progressReport: CGFloat = 0
-            var progressShot: CGFloat = 0
-            
-            ReportModel.backupCloudData(allReportData) { [weak self] progress, err  in
-                if let progress = progress {
-                    progressReport = progress
+            DataServiceManager.shared.backupData { [weak self] progress, err in
+                if let _ = err {
+                    backupProgressView.removeFromSuperview()
+                    fadedView.removeFromSuperview()
+                    self?.showAlert(title: "Back up error", message: "Đã xảy ra lỗi trong quá trình backup dữ liệu.")
+                    return
                     
-                    backupProgressView.setProgress(progressReport/2.0 + progressShot/2.0, animated: true)
-                    if progressReport == 1 && progressShot == 1 {
+                } else if let progress = progress {
+                    backupProgressView.setProgress(progress, animated: true)
+                    
+                    if progress == 1 {
                         backupProgressView.perform(M13ProgressViewActionSuccess, animated: true)
                         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-                            self?.showAlert(title: "Back up", message: "Mọi dữ liệu đã được back up lên server")
                             backupProgressView.removeFromSuperview()
                             fadedView.removeFromSuperview()
-                            
-                            return
-                        }
-                        
-                    }
-                }
-
-            }
-            let allShotData: [ShotModel] = DataServiceManager.shared.getAllData()//ShotModel.getAllData().map({$0})
-            ShotModel.backupCloudData(allShotData) { [weak self] progress, err in
-                
-                if let progress = progress {
-                    progressShot = progress
-                    
-                    backupProgressView.setProgress(progressReport/2.0 + progressShot/2.0, animated: true)
-                    if progressReport == 1 && progressShot == 1 {
-                        backupProgressView.perform(M13ProgressViewActionSuccess, animated: true)
-                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
                             self?.showAlert(title: "Back up", message: "Mọi dữ liệu đã được back up lên server")
-                            backupProgressView.removeFromSuperview()
-                            fadedView.removeFromSuperview()
-                            
                             return
                         }
-                        
                     }
                 }
-                
             }
         }
+//        self.showConfirmAlert(title: "Back up", message: "Mọi dữ liệu trên server sẽ được thay thế bằng dữ liệu trên máy của bạn. Bạn có muốn tiếp tục không?") {
+//
+//            let width: CGFloat = 50
+//            let height: CGFloat = 50
+//            let backupProgressView = M13ProgressViewRing(frame: CGRect(x: (UIScreen.main.bounds.width - width)/2, y: (UIScreen.main.bounds.height - height)/2, width: width, height: height))
+//            let fadedView = UIVisualEffectView(frame: UIScreen.main.bounds)
+//            fadedView.effect = UIBlurEffect(style: .dark)
+//            fadedView.alpha = 0.4
+//            self.navigationController?.view.addSubview(fadedView)
+//            self.navigationController?.view.addSubview(backupProgressView)
+//
+//            let allReportData: [ReportModel] = DataServiceManager.shared.getAllData()//ReportModel.getAllData().map({ $0 })
+//
+//            var progressReport: CGFloat = 0
+//            var progressShot: CGFloat = 0
+//
+//            ReportModel.backupCloudData(allReportData) { [weak self] progress, err  in
+//                if let progress = progress {
+//                    progressReport = progress
+//
+//                    backupProgressView.setProgress(progressReport/2.0 + progressShot/2.0, animated: true)
+//                    if progressReport == 1 && progressShot == 1 {
+//                        backupProgressView.perform(M13ProgressViewActionSuccess, animated: true)
+//                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+//                            self?.showAlert(title: "Back up", message: "Mọi dữ liệu đã được back up lên server")
+//                            backupProgressView.removeFromSuperview()
+//                            fadedView.removeFromSuperview()
+//
+//                            return
+//                        }
+//
+//                    }
+//                }
+//
+//            }
+//            let allShotData: [ShotModel] = DataServiceManager.shared.getAllData()//ShotModel.getAllData().map({$0})
+//            ShotModel.backupCloudData(allShotData) { [weak self] progress, err in
+//
+//                if let progress = progress {
+//                    progressShot = progress
+//
+//                    backupProgressView.setProgress(progressReport/2.0 + progressShot/2.0, animated: true)
+//                    if progressReport == 1 && progressShot == 1 {
+//                        backupProgressView.perform(M13ProgressViewActionSuccess, animated: true)
+//                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+//                            self?.showAlert(title: "Back up", message: "Mọi dữ liệu đã được back up lên server")
+//                            backupProgressView.removeFromSuperview()
+//                            fadedView.removeFromSuperview()
+//
+//                            return
+//                        }
+//
+//                    }
+//                }
+//
+//            }
+//        }
     }
     
 }

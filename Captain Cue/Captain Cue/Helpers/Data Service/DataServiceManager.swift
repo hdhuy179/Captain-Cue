@@ -31,11 +31,11 @@ typealias DataServiceObject = RemoteDataObject & LocalDataObject
 
 protocol DataServiceObjectDetail {
     var id: String { get set }
+    func getJSONData() -> [String: Any]
 }
 
 protocol FireBaseObjectDetails {
     static func getRemoteCollectionName() -> String
-    func getJSONData() -> [String: Any]
 }
 
 class DataServiceManager {//: DataService {
@@ -96,7 +96,6 @@ class DataServiceManager {//: DataService {
                     }
                     
                 case ReportModel.getRemoteCollectionName():
-                    print("check and merge")
                     if let localObj = localDataService?.getData(byID: item.objectID) as ReportModel? {
                         mergeChangeToRemoteDatabase(byRecordChangeObj: item, withLocalObj: localObj)
                     } else {
@@ -120,6 +119,7 @@ class DataServiceManager {//: DataService {
         case .create:
             guard let localObj = localObj else { return }
             remoteDataService?.addObject(data: localObj, completion: { [weak self] (err) in
+                
                 if err == nil {
                     self?.localDataService?.deleteObject(data: item)
                 }
@@ -132,7 +132,6 @@ class DataServiceManager {//: DataService {
                 }
             })
         case .delete:
-            print("Merge")
             remoteDataService?.deleteObject(data: item, completion: { [weak self] (err) in
                 if err == nil {
                     self?.localDataService?.deleteObject(data: item)
@@ -144,7 +143,7 @@ class DataServiceManager {//: DataService {
         
     }
     
-    func prepareChangeInLocalDatabase<T: DataServiceObject>(data: T, menthodType: MenthodType, completion: ((Error?) -> ())? = nil) {
+    func changeInLocalDatabase<T: DataServiceObject>(data: T, menthodType: MenthodType, completion: ((Error?) -> ())? = nil) {
         guard let localDataService = localDataService else {
             let err = NSError(domain: "Config local database before using is menthod", code: -1, userInfo: nil)
             completion?(err)
@@ -196,7 +195,7 @@ class DataServiceManager {//: DataService {
         }
         
         localDataService.addObject(data: data)
-        prepareChangeInLocalDatabase(data: data, menthodType: .create)
+        changeInLocalDatabase(data: data, menthodType: .create)
     }
     
     func updateObject<T: DataServiceObject>(data: T, completion: ((Error?) -> ())? = nil) {
@@ -207,7 +206,7 @@ class DataServiceManager {//: DataService {
         }
         
         localDataService.updateObject(data: data)
-        prepareChangeInLocalDatabase(data: data, menthodType: .update)
+        changeInLocalDatabase(data: data, menthodType: .update)
     }
     
     func getShotData(from reportID: String) -> [ShotModel] {
@@ -226,7 +225,6 @@ class DataServiceManager {//: DataService {
             completion?(err)
             return
         }
-        prepareChangeInLocalDatabase(data: data, menthodType: .delete)
         
         if data is ReportModel {
             let shotList = localDataService.getShotData(from: data.id)
@@ -234,7 +232,158 @@ class DataServiceManager {//: DataService {
                 deleteObject(data: item)
             }
         }
+        changeInLocalDatabase(data: data, menthodType: .delete)
         localDataService.deleteObject(data: data)
-        print("Done.")
+    }
+    
+    func isLocalDatabaseEmpty() -> Bool {
+        guard let localDataService = localDataService else {
+            fatalError("Config local database before using is menthod")
+        }
+        return localDataService.isDatabaseEmpty()
+    }
+    
+    func checkRestoreAbility(fromVC vc: UIViewController, completion: @escaping (Error?) -> ()) {
+        guard let remoteDataService = remoteDataService,
+            let localDataService = localDataService else { return }
+        
+        if localDataService.isDatabaseEmpty() == false {
+            return
+        }
+        
+        var reportData: [ReportModel]? = nil
+        var shotData: [ShotModel]? = nil
+        
+        let reportClosure: (([ReportModel]?, Error?) -> Void) = { datas, err in
+            if let err = err {
+                completion(err)
+            } else {
+                reportData = datas ?? []
+                checkShowAlert(completion: completion)
+            }
+        }
+        
+        let shotClosure: (([ShotModel]?, Error?) -> Void) = { datas, err in
+            if let err = err {
+                completion(err)
+            } else {
+                shotData = datas ?? []
+                checkShowAlert(completion: completion)
+            }
+            
+        }
+        
+        func checkShowAlert(completion: @escaping ((Error?) -> ())) {
+            if let shotData = shotData, let reportData = reportData, (shotData.isEmpty == false || reportData.isEmpty == false) {
+                vc.showConfirmAlert(title: "Restore", message: "Bạn có muốn khôi phục dữ liệu từ server không?") {
+                    localDataService.restoreData(data: reportData)
+                    localDataService.restoreData(data: shotData)
+                    completion(nil)
+                }
+            }
+        }
+        
+        remoteDataService.getAllData(completion: reportClosure)
+        remoteDataService.getAllData(completion: shotClosure)
+    }
+    
+    func backupData(completion: @escaping ((CGFloat? ,Error?) -> ())) {
+        guard let remoteDataService = remoteDataService,
+        let localDataService = localDataService else { return }
+        
+        let reportLocalData: [ReportModel] = localDataService.getAllDatas()
+        let shotLocalData: [ShotModel] = localDataService.getAllDatas()
+        
+        var reportCloudData: [ReportModel]? = nil
+        var shotCloudData: [ShotModel]? = nil
+        
+        let reportClosure: (([ReportModel]?, Error?) -> Void) = { datas, err in
+            if let err = err {
+                completion(nil, err)
+            } else {
+                reportCloudData = datas ?? []
+                checkLoadingDataDone()
+            }
+        }
+        
+        let shotClosure: (([ShotModel]?, Error?) -> Void) = { datas, err in
+            if let err = err {
+                completion(nil, err)
+            } else {
+                shotCloudData = datas ?? []
+                checkLoadingDataDone()
+            }
+            
+        }
+        
+        func checkLoadingDataDone() {
+            if let reportCloudData = reportCloudData, let shotCloudData = shotCloudData {
+                
+                let totalTask = reportCloudData.count + shotCloudData.count + reportLocalData.count + shotLocalData.count
+                var currentProgress = 0
+                
+                var shotDeleteCounter = 0
+                var reportDeleteCounter = 0
+                
+                for item in shotCloudData {
+                    remoteDataService.deleteObject(data: item) { (err) in
+                        
+                        if let err = err {
+                            completion(nil, err)
+                        } else {
+                            
+                            currentProgress += 1
+                            completion((CGFloat(currentProgress)/CGFloat(totalTask)), nil)
+                            shotDeleteCounter += 1
+                            if shotDeleteCounter == shotCloudData.count {
+                                for itemLocal in shotLocalData {
+                                    remoteDataService.addObject(data: itemLocal) { (err) in
+                                        if let err = err {
+                                            completion(nil, err)
+                                        } else {
+                                            currentProgress += 1
+                                            completion((CGFloat(currentProgress)/CGFloat(totalTask)), nil)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                for item in reportCloudData {
+                    
+                    remoteDataService.deleteObject(data: item) { (err) in
+                        
+                        if let err = err {
+                            completion(nil, err)
+                        } else {
+                            
+                            currentProgress += 1
+                            completion((CGFloat(currentProgress)/CGFloat(totalTask)), nil)
+                            reportDeleteCounter += 1
+                            
+                            if reportDeleteCounter == reportCloudData.count {
+                                for itemLocal in reportLocalData {
+                                    remoteDataService.addObject(data: itemLocal) { (err) in
+                                        if let err = err {
+                                            completion(nil, err)
+                                        } else {
+                                            currentProgress += 1
+                                            completion((CGFloat(currentProgress)/CGFloat(totalTask)), nil)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        completion(0, nil)
+        
+        remoteDataService.getAllData(completion: reportClosure)
+        remoteDataService.getAllData(completion: shotClosure)
     }
 }

@@ -44,7 +44,7 @@ struct Constants {
     
     struct ReportDetailsVC {
         static let tbvCellID = "TableviewCell"
-        static let tbvCellHeight: CGFloat = 50
+        static let tbvCellHeight: CGFloat = 70
         static let tbvNumberOfRows: Int = 7
     }
     

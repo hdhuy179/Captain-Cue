@@ -7,6 +7,8 @@
 //
 
 protocol LocalDataService {
+    func isDatabaseEmpty() -> Bool
+    
     func getData<T : LocalDataObject>(byID id: String) -> T?
 
     func getAllDatas<T : LocalDataObject>() -> [T]
@@ -22,6 +24,8 @@ protocol LocalDataService {
     func getOfflineStore(ofObjID id: String) -> [OfflineStorageModel]
 
     func deleteObject<T: LocalDataObject> (data: T)
+    
+    func restoreData<T: LocalDataObject> (data: [T])
 }
 
 typealias LocalDataObject = Object & DataServiceObjectDetail
@@ -32,6 +36,10 @@ final class RealmDataService: LocalDataService {
     
     init(_realm: Realm = try! Realm()) {
         self.realm = _realm
+    }
+    
+    func isDatabaseEmpty() -> Bool {
+        return realm.isEmpty
     }
     
     func convertToModel<T: LocalDataObject> (_ data: Results<T>) -> [T]{
@@ -83,9 +91,9 @@ final class RealmDataService: LocalDataService {
     }
     
     func deleteObject<T: LocalDataObject>(data: T) {
-        if (getData(byID: data.id) as T?) == nil {
-            return
-        }
+//        if (getData(byID: data.id) as T?) == nil {
+//            return
+//        }
         realm.beginWrite()
         realm.delete(data)
         do {
@@ -98,6 +106,16 @@ final class RealmDataService: LocalDataService {
         let predicate = NSPredicate(format: "\(Constants.OfflineStorageModel.Properties.objectID) = %@", argumentArray: [objID])
         let result = convertToModel(realm.objects(OfflineStorageModel.self).filter(predicate)) as [OfflineStorageModel]
         return result
+    }
+    
+    func restoreData<T: LocalDataObject> (data: [T]) {
+        realm.beginWrite()
+        realm.delete(realm.objects(T.self))
+        
+        for item in data {
+            realm.add(item)
+        }
+        try! realm.commitWrite()
     }
     
 //    func deleteObject(data: ShotModel, completion: @escaping ((Error?) -> ())) {

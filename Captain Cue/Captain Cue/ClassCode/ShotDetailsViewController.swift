@@ -140,51 +140,69 @@ extension ShotDetailsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        if reportDatas.count == 1, indexPath.item == 0 {
+            return UITableView.automaticDimension
+        }
+        return Constants.ReportManagerVC.tbvCellHeight
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return Constants.ReportManagerVC.tbvCellHeight
+        if reportDatas.count == 1, indexPath.item == 0 {
+            return Constants.ReportManagerVC.tbvCellHeight
+        }
+        return 0
     }
     
 }
 
 extension ShotDetailsViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.item == 0 {
-            return true
-        }
-        return false
+        guard let _ = reportDatas.first, reportDatas.count == 1 else { return false }
+        return true
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         guard let reportData = reportDatas.first, reportDatas.count == 1 else { return }
-        let nib = UINib(nibName: Constants.ReportManagerVC.alertNibName, bundle: nil)
-        self.alert = nib.instantiate(withOwner: self, options: nil).first as? EditReportAlert
-        if let alert = self.alert {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if indexPath.item > 0 {
+            let presentHandler = PresentHandler()
+            presentHandler.pushCreateNewShotVC(fromVC: self, withData: reportData, shotResult: shotResult?[indexPath.item - 1])
+            return
             
-            alert.configView(_reportData: reportData)
-            alert.delegate = self
+        } else if indexPath.item == 0 {
+            let nib = UINib(nibName: Constants.ReportManagerVC.alertNibName, bundle: nil)
+            self.alert = nib.instantiate(withOwner: self, options: nil).first as? EditReportAlert
             
-            let width: CGFloat = UIScreen.main.bounds.width*2/3
-            let height: CGFloat = 300
-            let x = (UIScreen.main.bounds.width - width)/2
-            let y = (UIScreen.main.bounds.height - height)/2
-            alert.frame = CGRect(x: x, y: y, width: width, height: height)
-            
-            self.visualEffect = UIVisualEffectView(frame: UIScreen.main.bounds)
-            self.visualEffect?.effect = UIBlurEffect(style: .dark)
-            self.visualEffect?.alpha = 0.4
-            
-            self.navigationController?.view.addSubview(self.visualEffect!)
-            
-            self.navigationController?.view.addSubview(alert)
+            if let alert = self.alert {
+                
+                alert.configView(_reportData: reportData)
+                alert.delegate = self
+                
+                let width: CGFloat = UIScreen.main.bounds.width*2/3
+                let height: CGFloat = 300
+                let x = (UIScreen.main.bounds.width - width)/2
+                let y = (UIScreen.main.bounds.height - height)/2
+                alert.frame = CGRect(x: x, y: y, width: width, height: height)
+                
+                self.visualEffect = UIVisualEffectView(frame: UIScreen.main.bounds)
+                self.visualEffect?.effect = UIBlurEffect(style: .dark)
+                self.visualEffect?.alpha = 0.4
+                
+                self.navigationController?.view.addSubview(self.visualEffect!)
+                
+                self.navigationController?.view.addSubview(alert)
+            }
         }
         
-        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        if indexPath.item == 0 || reportDatas.count > 1{
+        guard let reportData = reportDatas.first else { return nil }
+        
+        if indexPath.item == 0 || reportDatas.count > 1 {
             return nil
         }
         let delete = UITableViewRowAction(style: .destructive, title: "Xoá") { (_, _) in
@@ -198,7 +216,11 @@ extension ShotDetailsViewController: UITableViewDelegate {
 
             }
         }
-        return [delete]
+        let edit = UITableViewRowAction(style: .normal, title: "Sửa") { (_, _) in
+            let presentHandler = PresentHandler()
+            presentHandler.pushCreateNewShotVC(fromVC: self, withData: reportData, shotResult: self.shotResult?[indexPath.item - 1])
+        }
+        return [delete, edit]
     }
 }
 extension ShotDetailsViewController: EditReportAlertDelegate {

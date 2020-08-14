@@ -23,7 +23,7 @@ class CreateNewShotViewController: UIViewController {
     var selectedIndex: Int = -1
     
     var reportData: ReportModel!
-    var shotResult: [ShotModel]?
+    var shotResult: ShotModel?
     
     var mistakeDict: [Int: Bool] = [:]
     var isMistakeDisabled: Bool = false
@@ -60,7 +60,17 @@ class CreateNewShotViewController: UIViewController {
     }
     
     func setupDatas() {
-        shotResult = DataServiceManager.shared.getShotData(from: reportData.id) as [ShotModel]
+        if let shotResult = shotResult {
+            selectedIndex = shotResult.ballNumber - 1
+            mistakeDict.removeAll()
+            for item in shotResult.mistakes {
+                mistakeDict[item] = true
+            }
+            sgmcResult.selectedSegmentIndex = shotResult.result
+            swIsTechnically.isOn = shotResult.technicallyShot == 1
+            isMistakeDisabled = swIsTechnically.isOn
+            tbvMistakes.reloadData()
+        }
         
     }
     
@@ -69,72 +79,41 @@ class CreateNewShotViewController: UIViewController {
             showAlert(title: "Thiếu thông tin", message: "Hãy chọn số bóng bạn đã bắn.")
             return
         }
+        
+        let ballNumber = selectedIndex + 1
+        let result = sgmcResult.selectedSegmentIndex
         let technicallyShot = swIsTechnically.isOn ? TechnicallyShotType.technicallyShot.rawValue: TechnicallyShotType.none.rawValue
         
         let mistakes: List<Int> =  List<Int>()
-        
         if !swIsTechnically.isOn {
             mistakes.append(objectsIn: mistakeDict.keys.sorted(by: <)) 
         }
         
-        let shot = ShotModel(_ballNumber: selectedIndex + 1,
-                             _result: sgmcResult.selectedSegmentIndex,
-                             _technicallyShot: technicallyShot,
-                             _mistakes: mistakes,
-                             _time: Date(),
-                             _reportID: reportData.id)
-        DataServiceManager.shared.addObject(data: shot)
+        if let shotResult = shotResult {
+            if let newShot = shotResult.copy() as? ShotModel {
+                newShot.ballNumber = ballNumber
+                newShot.result = result
+                newShot.technicallyShot = technicallyShot
+                newShot.mistakes = mistakes
+                DataServiceManager.shared.updateObject(data: newShot)
+            }
+        } else {
+            let shot = ShotModel(_ballNumber: ballNumber,
+                                 _result: result,
+                                 _technicallyShot: technicallyShot,
+                                 _mistakes: mistakes,
+                                 _time: Date(),
+                                 _reportID: reportData.id)
+            DataServiceManager.shared.addObject(data: shot)
+        }
+        
         self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func swTechnicallyShotChangedValue(_ sender: UISwitch) {
-//        if sender.isOn {
-//            setAllCheckBox(toDisable: true)
-//
-//        } else {
-//            setAllCheckBox(toDisable: false)
-//        }
         isMistakeDisabled = sender.isOn
         tbvMistakes.reloadData()
     }
-//
-//    func setAllCheckBox(toDisable: Bool) {
-//
-//        for index in 0..<checkBoxList.count {
-//            setCheckBox(checkBoxList[index], isDisable: toDisable)
-//            if let btn = self.view.viewWithTag(index + 1) as? RaisedButton {
-//                if toDisable {
-//                    btn.pulseOpacity = 0
-//                } else {
-//                    btn.pulseOpacity = 0.2
-//                }
-//            }
-//        }
-//    }
-//
-//    func setCheckBox(_ checkBox: M13Checkbox, isDisable: Bool) {
-//        if isDisable {
-//            checkBox.setCheckState(.mixed, animated: true)
-//            checkBox.tintColor = .lightGray
-//            checkBox.isEnabled = false
-//        } else {
-//            checkBox.isEnabled = true
-//            checkBox.tintColor = .systemBlue
-//            checkBox.setCheckState(.unchecked, animated: true)
-//        }
-//    }
-    
-//    @IBAction func btnMistakesWereTapped(_ sender: UIButton) {
-//        let tag = sender.tag - 1
-//        if tag >= 0 && tag < checkBoxList.count {
-//            let checkBox = checkBoxList[tag]
-//            if checkBox.isEnabled == false {
-//                return
-//            }
-//            let nextState: M13Checkbox.CheckState = checkBox.checkState == .checked ? .unchecked : .checked
-//            checkBox.setCheckState(nextState, animated: true)
-//        }
-//    }
 }
 
 extension CreateNewShotViewController: UICollectionViewDataSource {
@@ -224,7 +203,7 @@ extension CreateNewShotViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if mistakeDict[indexPath.item] == true {
-            mistakeDict[indexPath.item] = false
+            mistakeDict.removeValue(forKey: indexPath.item)
         } else {
             mistakeDict[indexPath.item] = true
         }

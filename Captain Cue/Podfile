@@ -6,6 +6,7 @@ target 'Captain Cue' do
   use_frameworks!
 #use_modular_headers!
   # Pods for Captain Cue
+  #pod 'GoogleSignIn'
   pod 'Firebase/Analytics'
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
@@ -15,8 +16,8 @@ target 'Captain Cue' do
 	pod 'RealmSwift'
 	pod 'Material'
 	pod 'M13Checkbox'
-  pod 'RxSwift'
-  pod 'RxCocoa'
+  #pod 'RxSwift'
+  #pod 'RxCocoa'
   pod 'M13ProgressSuite'
   pod 'ReachabilitySwift'
   

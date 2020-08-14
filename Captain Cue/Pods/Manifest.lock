@@ -349,12 +349,6 @@ PODS:
   - Realm/Headers (5.3.3)
   - RealmSwift (5.3.3):
     - Realm (= 5.3.3)
-  - RxCocoa (5.1.1):
-    - RxRelay (~> 5)
-    - RxSwift (~> 5)
-  - RxRelay (5.1.1):
-    - RxSwift (~> 5)
-  - RxSwift (5.1.1)
 
 DEPENDENCIES:
   - Firebase/Analytics
@@ -368,8 +362,6 @@ DEPENDENCIES:
   - ObjectMapper
   - ReachabilitySwift
   - RealmSwift
-  - RxCocoa
-  - RxSwift
 
 SPEC REPOS:
   trunk:
@@ -400,9 +392,6 @@ SPEC REPOS:
     - ReachabilitySwift
     - Realm
     - RealmSwift
-    - RxCocoa
-    - RxRelay
-    - RxSwift
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -432,10 +421,7 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   Realm: 2d57ea355bf8ca2a0964d6bfb38d28d7ff2addf6
   RealmSwift: 0a709536ecea30eea1d3c514f6ade2ed078dee3c
-  RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
-  RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
-  RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
 
-PODFILE CHECKSUM: 903764169f2c343bb31d547804496f107378f957
+PODFILE CHECKSUM: fcb66a1c6f748646d16e72a53b4956660b308f6a
 
 COCOAPODS: 1.9.1
